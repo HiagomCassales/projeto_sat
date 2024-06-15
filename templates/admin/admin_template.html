@@ -1,0 +1,13 @@
+{% extends 'shared/base.html' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<h1>Bem-vindo ao Painel de Administração</h1>
+<p>Escolha uma categoria para visualizar:</p>
+<ul>
+    <li><a href="{% url 'sgdc_view' %}">SGDC</a></li>
+    <li><a href="{% url 'lessonia_view' %}">Lessonia</a></li>
+    <li><a href="{% url 'infraestruturas_criticas_view' %}">Infraestruturas Críticas</a></li>
+</ul>
+{% endblock %}

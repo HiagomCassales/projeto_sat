@@ -1,0 +1,29 @@
+<header class="bg-dark text-white p-3">
+    <div class="container">
+        <h1>Meu Projeto</h1>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    {% if user.is_authenticated %}
+                        {% if user.category == 'admin' %}
+                            <li class="nav-item"><a class="nav-link" href="{% url 'admin_view' %}">Admin</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'sgdc_view' %}">SGDC</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'lessonia_view' %}">Lessonia</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'infraestruturas_criticas_view' %}">Infraestruturas Críticas</a></li>
+                        {% elif user.category == 'sgdc' %}
+                            <li class="nav-item"><a class="nav-link" href="{% url 'sgdc_view' %}">SGDC</a></li>
+                        {% elif user.category == 'lessonia' %}
+                            <li class="nav-item"><a class="nav-link" href="{% url 'lessonia_view' %}">Lessonia</a></li>
+                        {% elif user.category == 'infraestruturas_criticas' %}
+                            <li class="nav-item"><a class="nav-link" href="{% url 'infraestruturas_criticas_view' %}">Infraestruturas Críticas</a></li>
+                        {% endif %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    </div>
+</header>

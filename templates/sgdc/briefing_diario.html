@@ -1,0 +1,256 @@
+{% extends 'shared/base.html' %}
+
+{% block title %}Briefing Diário{% endblock %}
+
+{% block content %}
+<style>
+    .circle-select {
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        background-color: grey;
+        text-align: center;
+        line-height: 20px;
+        border: 2px solid #ccc;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        padding: 0;
+        position: relative;
+        font-size: 0;
+        transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), inset 0 -2px 4px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+    }
+
+    .circle-select:hover {
+        transform: scale(1.1);
+    }
+
+    .circle-select option {
+        font-size: 16px;
+    }
+
+    .select-OK {
+        background-color: green;
+        border-color: green;
+        box-shadow: 0 4px 6px rgba(0, 128, 0, 0.2), inset 0 -2px 4px rgba(0, 128, 0, 0.2);
+    }
+
+    .select-WARN {
+        background-color: yellow;
+        border-color: yellow;
+        box-shadow: 0 4px 6px rgba(255, 255, 0, 0.2), inset 0 -2px 4px rgba(255, 255, 0, 0.2);
+    }
+
+    .select-CRIT {
+        background-color: red;
+        border-color: red;
+        box-shadow: 0 4px 6px rgba(255, 0, 0, 0.2), inset 0 -2px 4px rgba(255, 0, 0, 0.2);
+    }
+
+    .form-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .form-group label {
+        margin-right: 10px;
+        font-weight: bold;
+    }
+
+    .card {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .card-body h2 {
+        margin-top: 20px;
+    }
+
+    .logo {
+        max-height: 90px;
+        margin-right: 25px;
+    }
+
+    .custom-border {
+        border: 1px solid #dee2e6;
+        padding: 1rem;
+        border-radius: 0.25rem;
+        overflow-x: auto; /* Adicionado para evitar estouro em largura */
+    }
+
+    .table td {
+        vertical-align: middle;
+    }
+</style>
+
+    <div class="container d-flex flex-column justify-content-center align-items-center min-vh-100" style="max-width: 900px; margin: auto;">
+        <div class="row w-100 mb-3">
+            <div class="col-12 col-md-2 d-flex justify-content-center justify-content-md-start mb-3 mb-md-0">
+                <img src="https://www2.fab.mil.br/incaer/images/eventgallery/SISCULT/Heraldica/Emblemas/Imagens/comae.gif" alt="Logo" class="logo" style="max-width: 100%;">
+            </div>
+            <div class="col-12 col-md-10 text-center mt-3 mt-md-0">
+                <h3 class="card-title mt-3">Briefing Diário de Operações Espaciais - {{ current_date|date:"d/m/Y" }}</h3>
+                <h6 class="card-title mt-3">Período: {{ briefing_start|date:"d/m/Y H:i" }} até {{ briefing_end|date:"d/m/Y H:i" }}</h6>
+            </div>
+        </div>
+    
+        <div aria-live="polite" aria-atomic="true" class="position-relative w-100">
+            <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                {% if success_message %}
+                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
+                    <div class="toast-header">
+                        <strong class="me-auto">Sucesso</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        {{ success_message }}
+                    </div>
+                </div>
+                {% endif %}
+                {% if error_message %}
+                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
+                    <div class="toast-header">
+                        <strong class="me-auto">Erro</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        {{ error_message }}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    
+        <div class="card mt-3 border-primary w-100">
+            <div class="card-header bg-primary text-white text-center">
+                <h4 class="m-0">SGDC</h4>
+            </div>
+            <div class="card-body">
+                <form method="post" class="w-100">
+                    {% csrf_token %}
+    
+                    <h4 class="m-0 text-center">Segmento Espacial</h4>
+                    <div class="custom-border mt-3">
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr>
+                                    <td class="col-8">{{ form.plataforma_saude.label_tag }}</td>
+                                    <td class="col-4 text-center">{{ form.plataforma_saude }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="col-8">{{ form.proc_executados.label_tag }}</td>
+                                    <td class="col-4 text-center">{{ form.proc_executados }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="col-8">{{ form.alerta_conjuncao.label_tag }}</td>
+                                    <td class="col-4 text-center">{{ form.alerta_conjuncao }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="col-8">{{ form.campanha_ranging.label_tag }}</td>
+                                    <td class="col-4 text-center">{{ form.campanha_ranging }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="col-8">{{ form.prox_manobra.label_tag }}</td>
+                                    <td class="col-4 text-center">{{ form.prox_manobra }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="col-8">{{ form.tempo_eclipse.label_tag }}</td>
+                                    <td class="col-4 text-center">{{ form.tempo_eclipse }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+    
+                    <h4 class="text-center mt-5">Segmento Solo</h4>
+                    <div class="custom-border mt-3">
+                        <table class="table table-borderless">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Indicadores</th>
+                                    <th class="text-center">BRA</th>
+                                    <th class="text-center">RIO</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>SMC</td>
+                                    <td class="text-center">{{ form.smc_brasilia }}</td>
+                                    <td class="text-center">{{ form.smc_rio }}</td>
+                                </tr>
+                                <tr>
+                                    <td>CMC-X</td>
+                                    <td class="text-center">{{ form.cmc_brasilia }}</td>
+                                    <td class="text-center">{{ form.cmc_rio }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Antena (TCR)</td>
+                                    <td class="text-center">{{ form.tcr_brasilia }}</td>
+                                    <td class="text-center">{{ form.tcr_rio }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+    
+                    <h4 class="text-center mt-5">Emprego da Carga Útil Militar</h4>
+                    <div class="custom-border mt-3">
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr>
+                                    <td>{{ form.enlaces_ativos.label_tag }}</td>
+                                    <td class="text-center">{{ form.enlaces_ativos }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ form.qualidade_enlaces.label_tag }}</td>
+                                    <td class="text-center">{{ form.qualidade_enlaces }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ form.antena_teatro_em_uso.label_tag }}</td>
+                                    <td class="text-center">{{ form.antena_teatro_em_uso }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-center mt-5">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const selects = document.querySelectorAll('.circle-select');
+
+        function setSelectColor(select) {
+            select.className = 'circle-select';
+            if (select.value === 'OK') {
+                select.classList.add('select-OK');
+            } else if (select.value === 'WARN') {
+                select.classList.add('select-WARN');
+            } else if (select.value === 'CRIT') {
+                select.classList.add('select-CRIT');
+            }
+        }
+
+        selects.forEach(select => {
+            setSelectColor(select);
+            select.addEventListener('change', function () {
+                setSelectColor(select);
+            });
+        });
+
+        const toastElList = [].slice.call(document.querySelectorAll('.toast'));
+        const toastList = toastElList.map(function (toastEl) {
+            return new bootstrap.Toast(toastEl);
+        });
+        toastList.forEach(toast => toast.show());
+    });
+</script>
+
+{% endblock %}
