@@ -56,7 +56,7 @@ def admin_view(request):
 def sgdc_view(request):
     if request.user.category != 'sgdc' and request.user.category != 'admin':
         return HttpResponseForbidden("Você não tem permissão para acessar esta página.")
-    return render(request, 'sgdc/index.html')
+    return redirect('index')
 
 @login_required
 def lessonia_view(request):

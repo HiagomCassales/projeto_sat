@@ -1,3 +1,5 @@
+# apps/sgdc/admin.py
 from django.contrib import admin
+from .models import EspacialSegment
 
-# Register your models here.
+admin.site.register(EspacialSegment)
