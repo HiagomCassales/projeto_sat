@@ -23,7 +23,9 @@ urlpatterns = [
     path('users/', include('apps.users.urls')),
     path('', user_views.login_view, name='login'),
     path('post_login_redirect/', user_views.post_login_redirect, name='post_login_redirect'),
-    path('sgdc/', include('apps.sgdc.urls')),
+    path('sgdc/', include('apps.sgdc.urls', namespace='sgdc')),
+    path('lessonia/', include('apps.lessonia.urls', namespace='lessonia')),
+    path('infraestruturas_criticas/', include('apps.infraestrutura_critica.urls', namespace='infraestrutura_critica')),
 ]
 
 

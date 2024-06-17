@@ -14,7 +14,7 @@ def index(request):
 def new_briefing(request):
     today = timezone.now().date()
     if EspacialSegment.objects.filter(data=today).exists():
-        return redirect('index')
+        return redirect('sgdc:index')
     
     if request.method == 'POST':
         form = EspacialSegmentForm(request.POST)
@@ -22,7 +22,7 @@ def new_briefing(request):
             briefing = form.save(commit=False)
             briefing.data = today
             briefing.save()
-            return redirect('index')
+            return redirect('sgdc:index')
     else:
         form = EspacialSegmentForm()
     
@@ -34,7 +34,7 @@ def edit_briefing(request, pk):
         form = EspacialSegmentForm(request.POST, instance=briefing)
         if form.is_valid():
             form.save()
-            return redirect('index')
+            return redirect('sgdc:index')
     else:
         form = EspacialSegmentForm(instance=briefing)
     
@@ -43,7 +43,7 @@ def edit_briefing(request, pk):
 def delete_briefing(request, pk):
     briefing = get_object_or_404(EspacialSegment, pk=pk)
     briefing.delete()
-    return redirect('index')
+    return redirect('sgdc:index')
 
 def week_briefings_list(request):
     briefings = EspacialSegment.objects.all()

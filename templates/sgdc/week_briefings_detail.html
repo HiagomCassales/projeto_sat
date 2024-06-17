@@ -23,8 +23,8 @@
                         <p><strong>Clima Espacial:</strong> {{ briefing.clima_espacial }}</p>
                         <p><strong>SSA/SDA:</strong> {{ briefing.ssa_sda }}</p>
                         <p><strong>Descrição da Operação:</strong> {{ briefing.descricao_operacao }}</p>
-                        <a href="{% url 'edit_briefing' briefing.pk %}" class="btn btn-warning btn-sm">Editar</a>
-                        <a href="{% url 'delete_briefing' briefing.pk %}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este briefing?');">Remover</a>
+                        <a href="{% url 'sgdc:edit_briefing' briefing.pk %}" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="{% url 'sgdc:delete_briefing' briefing.pk %}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este briefing?');">Remover</a>
                     {% else %}
                         <p>Nenhum briefing cadastrado para este dia.</p>
                     {% endif %}

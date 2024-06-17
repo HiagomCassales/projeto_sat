@@ -5,11 +5,11 @@
 {% block content %}
 <h1>Briefing Diário de Operações Espaciais</h1>
 {% if not briefing %}
-    <a href="{% url 'new_briefing' %}" class="btn btn-primary">Cadastrar Briefing de Hoje</a>
+    <a href="{% url 'sgdc:new_briefing' %}" class="btn btn-primary">Cadastrar Briefing de Hoje</a>
 {% endif %}
 
 <div class="mt-4">
-    <a href="{% url 'week_briefings_list' %}" class="btn btn-secondary">Ver Briefings Semanais</a>
+    <a href="{% url 'sgdc:week_briefings_list' %}" class="btn btn-secondary">Ver Briefings Semanais</a>
 </div>
 
 <h2 class="mt-4">Briefings Cadastrados</h2>
@@ -29,8 +29,8 @@
             <td>{{ briefing.plataforma_saude }}</td>
             <td>{{ briefing.prox_manobra }}</td>
             <td>
-                <a href="{% url 'edit_briefing' briefing.pk %}" class="btn btn-warning btn-sm">Editar</a>
-                <a href="{% url 'delete_briefing' briefing.pk %}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este briefing?');">Remover</a>
+                <a href="{% url 'sgdc:edit_briefing' briefing.pk %}" class="btn btn-warning btn-sm">Editar</a>
+                <a href="{% url 'sgdc:delete_briefing' briefing.pk %}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este briefing?');">Remover</a>
             </td>
         </tr>
         {% endfor %}
@@ -56,7 +56,7 @@
                 {
                     text: 'Adicionar Briefing',
                     action: function (e, dt, node, config) {
-                        window.location.href = "{% url 'new_briefing' %}";
+                        window.location.href = "{% url 'sgdc:new_briefing' %}";
                     },
                     className: 'btn btn-primary'
                 }

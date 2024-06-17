@@ -1,0 +1,50 @@
+{% extends 'shared/base.html' %}
+
+{% block title %}Briefings da Semana {{ first_day_of_week|date:"d/m/Y" }} - {{ last_day_of_week|date:"d/m/Y" }}{% endblock %}
+
+{% block content %}
+<h1>Briefings da Semana {{ first_day_of_week|date:"d/m/Y" }} - {{ last_day_of_week|date:"d/m/Y" }}</h1>
+
+<div class="row">
+    {% for day, briefing in briefings %}
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title">{{ day|date:"l, d/m/Y" }}</h5>
+                </div>
+                <div class="card-body">
+                    {% if briefing %}
+                        <p><strong>Saúde da Plataforma X18:</strong> {{ briefing.saude_plataforma_x18 }}</p>
+                        <p><strong>Saúde da Plataforma X19:</strong> {{ briefing.saude_plataforma_x19 }}</p>
+                        <p><strong>Alerta de Conjunção X18:</strong> {{ briefing.alerta_conjuncao_x18 }}</p>
+                        <p><strong>Alerta de Conjunção X19:</strong> {{ briefing.alerta_conjuncao_x19 }}</p>
+                        <p><strong>Manobra X18:</strong> {{ briefing.manobra_x18 }}</p>
+                        <p><strong>Manobra X19:</strong> {{ briefing.manobra_x19 }}</p>
+                        <p><strong>Passes Brasília X18:</strong> {{ briefing.passes_brasilia_x18 }}</p>
+                        <p><strong>Passes Brasília X19:</strong> {{ briefing.passes_brasilia_x19 }}</p>
+                        <p><strong>Passes Formosa X18:</strong> {{ briefing.passes_formosa_x18 }}</p>
+                        <p><strong>Passes Formosa X19:</strong> {{ briefing.passes_formosa_x19 }}</p>
+                        <p><strong>Passes Manaus X18:</strong> {{ briefing.passes_manaus_x18 }}</p>
+                        <p><strong>Passes Manaus X19:</strong> {{ briefing.passes_manaus_x19 }}</p>
+                        <p><strong>Antena Brasília X18:</strong> {{ briefing.antena_brasilia_x18 }}</p>
+                        <p><strong>Antena Brasília X19:</strong> {{ briefing.antena_brasilia_x19 }}</p>
+                        <p><strong>Antena Formosa X18:</strong> {{ briefing.antena_formosa_x18 }}</p>
+                        <p><strong>Antena Formosa X19:</strong> {{ briefing.antena_formosa_x19 }}</p>
+                        <p><strong>Antena Manaus X18:</strong> {{ briefing.antena_manaus_x18 }}</p>
+                        <p><strong>Antena Manaus X19:</strong> {{ briefing.antena_manaus_x19 }}</p>
+                        <p><strong>Imagens Planejadas X18:</strong> {{ briefing.imagens_planejadas_x18 }}</p>
+                        <p><strong>Imagens Planejadas X19:</strong> {{ briefing.imagens_planejadas_x19 }}</p>
+                        <p><strong>Imagens Recebidas X18:</strong> {{ briefing.imagens_recebidas_x18 }}</p>
+                        <p><strong>Imagens Recebidas X19:</strong> {{ briefing.imagens_recebidas_x19 }}</p>
+                        <p><strong>Observações:</strong> {{ briefing.observacoes }}</p>
+                        <a href="{% url 'lessonia:edit_briefing' briefing.pk %}" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="{% url 'lessonia:delete_briefing' briefing.pk %}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este briefing?');">Remover</a>
+                    {% else %}
+                        <p>Nenhum briefing cadastrado para este dia.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

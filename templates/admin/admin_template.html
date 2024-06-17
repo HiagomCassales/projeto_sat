@@ -10,4 +10,71 @@
     <li><a href="{% url 'lessonia_view' %}">Lessonia</a></li>
     <li><a href="{% url 'infraestruturas_criticas_view' %}">Infraestruturas Críticas</a></li>
 </ul>
+
+<h2>Usuários Pendentes de Aprovação</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Usuário</th>
+            <th>Categoria</th>
+            <th>Ação</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in pending_users %}
+        <tr>
+            <td>{{ user.username }}</td>
+            <td>{{ user.get_category_display }}</td>
+            <td>
+                <form method="post" action="{% url 'approve_user' user.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success">Aprovar</button>
+                </form>
+                <form method="post" action="{% url 'reject_user' user.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Rejeitar</button>
+                </form>
+                <form method="post" action="{% url 'delete_user' user.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-warning">Excluir</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Usuários Aprovados</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Usuário</th>
+            <th>Categoria</th>
+            <th>Ação</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in approved_users %}
+        <tr>
+            <td>{{ user.username }}</td>
+            <td>{{ user.get_category_display }}</td>
+            <td>
+                <form method="post" action="{% url 'delete_user' user.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Excluir</button>
+                </form>
+                <form method="post" action="{% url 'change_category' user.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <select name="category" class="form-control d-inline" style="width: auto;">
+                        {% for category in user.CATEGORY_CHOICES %}
+                            <option value="{{ category.0 }}" {% if user.category == category.0 %}selected{% endif %}>{{ category.1 }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-primary">Alterar Categoria</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}

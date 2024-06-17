@@ -1,0 +1,59 @@
+{% extends 'shared/base.html' %}
+
+{% block title %}Briefings da Semana {{ first_day_of_week|date:"d/m/Y" }} - {{ last_day_of_week|date:"d/m/Y" }}{% endblock %}
+
+{% block content %}
+<h1>Briefings da Semana {{ first_day_of_week|date:"d/m/Y" }} - {{ last_day_of_week|date:"d/m/Y" }}</h1>
+
+<div class="row">
+    {% for day, briefing in briefings %}
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title">{{ day|date:"l, d/m/Y" }}</h5>
+                </div>
+                <div class="card-body">
+                    {% if briefing %}
+                        <p><strong>GMG 1.1 Brasília:</strong> {{ briefing.gmg1_1_brasilia }}</p>
+                        <p><strong>GMG 1.1 Rio de Janeiro:</strong> {{ briefing.gmg1_1_rio }}</p>
+                        <p><strong>GMG 1.2 Brasília:</strong> {{ briefing.gmg1_2_brasilia }}</p>
+                        <p><strong>GMG 1.2 Rio de Janeiro:</strong> {{ briefing.gmg1_2_rio }}</p>
+                        <p><strong>Autonomia 1 Brasília:</strong> {{ briefing.autonomia1_brasilia }}</p>
+                        <p><strong>Autonomia 1 Rio de Janeiro:</strong> {{ briefing.autonomia1_rio }}</p>
+                        <p><strong>UPS 1 Brasília:</strong> {{ briefing.ups1_brasilia }}</p>
+                        <p><strong>UPS 1 Rio de Janeiro:</strong> {{ briefing.ups1_rio }}</p>
+                        
+                        <p><strong>GMG 2.1 Brasília:</strong> {{ briefing.gmg2_1_brasilia }}</p>
+                        <p><strong>GMG 2.1 Rio de Janeiro:</strong> {{ briefing.gmg2_1_rio }}</p>
+                        <p><strong>GMG 2.2 Brasília:</strong> {{ briefing.gmg2_2_brasilia }}</p>
+                        <p><strong>GMG 2.2 Rio de Janeiro:</strong> {{ briefing.gmg2_2_rio }}</p>
+                        <p><strong>Autonomia 2 Brasília:</strong> {{ briefing.autonomia2_brasilia }}</p>
+                        <p><strong>Autonomia 2 Rio de Janeiro:</strong> {{ briefing.autonomia2_rio }}</p>
+                        <p><strong>UPS 2 Brasília:</strong> {{ briefing.ups2_brasilia }}</p>
+                        <p><strong>UPS 2 Rio de Janeiro:</strong> {{ briefing.ups2_rio }}</p>
+
+                        <p><strong>URL 1.1 Brasília:</strong> {{ briefing.url1_1_brasilia }}</p>
+                        <p><strong>URL 1.1 Rio de Janeiro:</strong> {{ briefing.url1_1_rio }}</p>
+                        <p><strong>URL 1.2 Brasília:</strong> {{ briefing.url1_2_brasilia }}</p>
+                        <p><strong>URL 1.2 Rio de Janeiro:</strong> {{ briefing.url1_2_rio }}</p>
+
+                        <p><strong>URL 2.1 Brasília:</strong> {{ briefing.url2_1_brasilia }}</p>
+                        <p><strong>URL 2.1 Rio de Janeiro:</strong> {{ briefing.url2_1_rio }}</p>
+                        <p><strong>URL 2.2 Brasília:</strong> {{ briefing.url2_2_brasilia }}</p>
+                        <p><strong>URL 2.2 Rio de Janeiro:</strong> {{ briefing.url2_2_rio }}</p>
+
+                        <p><strong>Combate a Incêndio Brasília:</strong> {{ briefing.combate_incendio_brasilia }}</p>
+                        <p><strong>Combate a Incêndio Rio de Janeiro:</strong> {{ briefing.combate_incendio_rio }}</p>
+
+                        <p><strong>Observações:</strong> {{ briefing.observacoes }}</p>
+                        <a href="{% url 'infraestrutura_critica:edit_briefing' briefing.pk %}" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="{% url 'infraestrutura_critica:delete_briefing' briefing.pk %}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este briefing?');">Remover</a>
+                    {% else %}
+                        <p>Nenhum briefing cadastrado para este dia.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

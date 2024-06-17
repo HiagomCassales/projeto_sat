@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.users',
     'apps.sgdc',
+    'apps.lessonia',
+    'apps.infraestrutura_critica',
 ]
 
 MIDDLEWARE = [
