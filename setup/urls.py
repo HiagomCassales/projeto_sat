@@ -26,6 +26,10 @@ urlpatterns = [
     path('sgdc/', include('apps.sgdc.urls', namespace='sgdc')),
     path('lessonia/', include('apps.lessonia.urls', namespace='lessonia')),
     path('infraestruturas_criticas/', include('apps.infraestrutura_critica.urls', namespace='infraestrutura_critica')),
+    path('clima_espacial/', include('apps.clima_espacial.urls', namespace='clima_espacial')),
+    path('contratos_imagens/', include('apps.contratos_imagens.urls', namespace='contratos_imagens')),
+    path('briefing_raoa_sgdc/', include('apps.briefing_raoa_sgdc.urls', namespace='briefing_raoa_sgdc')),
+    path('briefing_raoa_lessonia/', include('apps.briefing_raoa_lessonia.urls', namespace='briefing_raoa_lessonia')),
 ]
 
 

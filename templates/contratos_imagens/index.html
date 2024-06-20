@@ -1,0 +1,41 @@
+{% extends 'shared/base.html' %}
+
+{% block title %}Contratos de Imagens{% endblock %}
+
+{% block content %}
+<h1>Contratos de Imagens</h1>
+{% if not contrato %}
+    <a href="{% url 'contratos_imagens:new_contrato' %}" class="btn btn-primary">Cadastrar Contrato de Hoje</a>
+{% endif %}
+
+<h2 class="mt-4">Contratos Cadastrados</h2>
+<table class="table table-striped mt-4">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Data</th>
+            <th>Lote 7 Planejado</th>
+            <th>ICEYE Planejado</th>
+            <th>Lote 7 Recebido</th>
+            <th>ICEYE Recebido</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for contrato in contratos %}
+        <tr>
+            <td>{{ contrato.id }}</td>
+            <td>{{ contrato.data|date:"d/m/Y" }}</td>
+            <td>{{ contrato.lote_7_planejado }}</td>
+            <td>{{ contrato.iceye_planejado }}</td>
+            <td>{{ contrato.lote_7_recebido }}</td>
+            <td>{{ contrato.iceye_recebido }}</td>
+            <td>
+                <a href="{% url 'contratos_imagens:edit_contrato' contrato.pk %}" class="btn btn-warning btn-sm">Editar</a>
+                <a href="{% url 'contratos_imagens:delete_contrato' contrato.pk %}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este contrato?');">Remover</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

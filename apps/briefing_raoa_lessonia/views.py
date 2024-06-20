@@ -1,0 +1,121 @@
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
+from django.utils import timezone
+from django.contrib import messages
+from .models import BriefingRaoaLessoniaModels
+from .forms import BriefingRaoaLessoniaForm
+from datetime import timedelta
+
+def has_permission(user):
+    return user.is_superuser or user.categories.filter(name='lessonia').exists() or user.categories.filter(name='admin').exists()
+
+@login_required
+def index(request):
+    if not has_permission(request.user):
+        messages.error(request, "Você não tem permissão para acessar esta página.")
+        return redirect('post_login_redirect')
+    
+    today = timezone.now().date()
+    briefing = BriefingRaoaLessoniaModels.objects.filter(data=today).first()
+    briefings = BriefingRaoaLessoniaModels.objects.all()
+    
+    return render(request, 'briefing_raoa_lessonia/index.html', {'briefing': briefing, 'briefings': briefings})
+
+@login_required
+def new_briefing(request):
+    if not has_permission(request.user):
+        messages.error(request, "Você não tem permissão para acessar esta página.")
+        return redirect('post_login_redirect')
+    
+    today = timezone.now().date()
+    if BriefingRaoaLessoniaModels.objects.filter(data=today).exists():
+        messages.warning(request, 'Um briefing para hoje já existe.')
+        return redirect('briefing_raoa_lessonia:index')
+    
+    if request.method == 'POST':
+        form = BriefingRaoaLessoniaForm(request.POST)
+        if form.is_valid():
+            briefing = form.save(commit=False)
+            briefing.data = today
+            briefing.save()
+            messages.success(request, 'Briefing criado com sucesso.')
+            return redirect('briefing_raoa_lessonia:index')
+        else:
+            messages.error(request, 'Erro ao criar o briefing. Por favor, verifique os dados e tente novamente.')
+    else:
+        form = BriefingRaoaLessoniaForm()
+    
+    return render(request, 'briefing_raoa_lessonia/briefing_diario.html', {'form': form})
+
+@login_required
+def edit_briefing(request, pk):
+    if not has_permission(request.user):
+        messages.error(request, "Você não tem permissão para acessar esta página.")
+        return redirect('post_login_redirect')
+    
+    briefing = get_object_or_404(BriefingRaoaLessoniaModels, pk=pk)
+    if request.method == 'POST':
+        form = BriefingRaoaLessoniaForm(request.POST, instance=briefing)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Briefing atualizado com sucesso.')
+            return redirect('briefing_raoa_lessonia:index')
+        else:
+            messages.error(request, 'Erro ao atualizar o briefing. Por favor, verifique os dados e tente novamente.')
+    else:
+        form = BriefingRaoaLessoniaForm(instance=briefing)
+    
+    return render(request, 'briefing_raoa_lessonia/edit_briefing_diario.html', {'form': form})
+
+@login_required
+def delete_briefing(request, pk):
+    if not has_permission(request.user):
+        messages.error(request, "Você não tem permissão para acessar esta página.")
+        return redirect('post_login_redirect')
+    
+    briefing = get_object_or_404(BriefingRaoaLessoniaModels, pk=pk)
+    briefing.delete()
+    messages.success(request, 'Briefing deletado com sucesso.')
+    return redirect('briefing_raoa_lessonia:index')
+
+@login_required
+def week_briefings_list(request):
+    if not has_permission(request.user):
+        messages.error(request, "Você não tem permissão para acessar esta página.")
+        return redirect('post_login_redirect')
+    
+    briefings = BriefingRaoaLessoniaModels.objects.all()
+    weeks = {}
+
+    for briefing in briefings:
+        year, week, _ = briefing.data.isocalendar()
+        if (year, week) not in weeks:
+            weeks[(year, week)] = []
+        weeks[(year, week)].append(briefing)
+
+    weeks_list = [{'year': year, 'week': week, 'briefings': briefings} for (year, week), briefings in weeks.items()]
+    weeks_list.sort(key=lambda x: (x['year'], x['week']), reverse=True)
+
+    return render(request, 'briefing_raoa_lessonia/week_briefings_list.html', {'weeks': weeks_list})
+
+@login_required
+def week_briefings_detail(request, year, week):
+    if not has_permission(request.user):
+        messages.error(request, "Você não tem permissão para acessar esta página.")
+        return redirect('post_login_redirect')
+    
+    first_day_of_week = timezone.datetime.strptime(f'{year}-W{week}-1', "%Y-W%W-%w").date()
+    last_day_of_week = first_day_of_week + timedelta(days=6)
+    days_of_week = [first_day_of_week + timedelta(days=i) for i in range(7)]
+
+    briefings_dict = {day: BriefingRaoaLessoniaModels.objects.filter(data=day).first() for day in days_of_week}
+    briefings = [(day, briefings_dict.get(day)) for day in days_of_week]
+
+    return render(request, 'briefing_raoa_lessonia/week_briefings_detail.html', {
+        'briefings': briefings, 
+        'year': year, 
+        'week': week,
+        'first_day_of_week': first_day_of_week,
+        'last_day_of_week': last_day_of_week
+    })

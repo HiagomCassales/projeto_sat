@@ -3,6 +3,7 @@ from django.utils import timezone
 from .models import EspacialSegment
 from .forms import EspacialSegmentForm
 from datetime import timedelta
+from django.contrib import messages
 
 def index(request):
     today = timezone.now().date()
@@ -14,6 +15,7 @@ def index(request):
 def new_briefing(request):
     today = timezone.now().date()
     if EspacialSegment.objects.filter(data=today).exists():
+        messages.warning(request, 'Um briefing para hoje já existe.')
         return redirect('sgdc:index')
     
     if request.method == 'POST':
@@ -22,7 +24,10 @@ def new_briefing(request):
             briefing = form.save(commit=False)
             briefing.data = today
             briefing.save()
+            messages.success(request, 'Briefing criado com sucesso.')
             return redirect('sgdc:index')
+        else:
+            messages.error(request, 'Erro ao criar o briefing. Por favor, verifique os dados e tente novamente.')
     else:
         form = EspacialSegmentForm()
     
@@ -34,7 +39,10 @@ def edit_briefing(request, pk):
         form = EspacialSegmentForm(request.POST, instance=briefing)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Briefing atualizado com sucesso.')
             return redirect('sgdc:index')
+        else:
+            messages.error(request, 'Erro ao atualizar o briefing. Por favor, verifique os dados e tente novamente.')
     else:
         form = EspacialSegmentForm(instance=briefing)
     
@@ -43,6 +51,7 @@ def edit_briefing(request, pk):
 def delete_briefing(request, pk):
     briefing = get_object_or_404(EspacialSegment, pk=pk)
     briefing.delete()
+    messages.success(request, 'Briefing deletado com sucesso.')
     return redirect('sgdc:index')
 
 def week_briefings_list(request):

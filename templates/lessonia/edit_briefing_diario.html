@@ -1,6 +1,6 @@
 {% extends 'shared/base.html' %}
 
-{% block title %}Briefing Diário Lessonia{% endblock %}
+{% block title %}Editar Briefing Diário Lessonia{% endblock %}
 
 {% block content %}
 <style>
@@ -99,34 +99,25 @@
             <img src="https://www2.fab.mil.br/incaer/images/eventgallery/SISCULT/Heraldica/Emblemas/Imagens/comae.gif" alt="Logo" class="logo" style="max-width: 100%;">
         </div>
         <div class="col-12 col-md-10 text-center mt-3 mt-md-0">
-            <h3 class="card-title mt-3">Briefing Diário Lessonia - {{ current_date|date:"d/m/Y" }}</h3>
+            <h3 class="card-title mt-3">Editar Briefing Diário Lessonia - {{ current_date|date:"d/m/Y" }}</h3>
             <h6 class="card-title mt-3">Período: {{ briefing_start|date:"d/m/Y H:i" }} até {{ briefing_end|date:"d/m/Y H:i" }}</h6>
         </div>
     </div>
 
     <div aria-live="polite" aria-atomic="true" class="position-relative w-100">
         <div class="toast-container position-fixed bottom-0 end-0 p-3">
-            {% if success_message %}
-            <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
-                <div class="toast-header">
-                    <strong class="me-auto">Sucesso</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-                <div class="toast-body">
-                    {{ success_message }}
-                </div>
-            </div>
-            {% endif %}
-            {% if error_message %}
-            <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
-                <div class="toast-header">
-                    <strong class="me-auto">Erro</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-                <div class="toast-body">
-                    {{ error_message }}
-                </div>
-            </div>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
+                        <div class="toast-header">
+                            <strong class="me-auto">{{ message.tags }}</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body">
+                            {{ message }}
+                        </div>
+                    </div>
+                {% endfor %}
             {% endif %}
         </div>
     </div>
@@ -272,6 +263,60 @@
                     </table>
                 </div>
 
+                <h4 class="m-0 text-center mt-5">Operação do Lessonia</h4>
+                <div class="custom-border mt-3">
+                    <table class="table table-borderless">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Indicadores</th>
+                                <th class="text-center">Local</th>
+                                <th class="text-center">Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Infra Crítica</td>
+                                <td class="text-center">Brasília</td>
+                                <td class="text-center">{{ form.infra_critica_brasilia }}</td>
+                            </tr>
+                            <tr>
+                                <td>Infra Crítica</td>
+                                <td class="text-center">Rio de Janeiro</td>
+                                <td class="text-center">{{ form.infra_critica_rio }}</td>
+                            </tr>
+                            <tr>
+                                <td>GCN/TCR</td>
+                                <td class="text-center">Brasília</td>
+                                <td class="text-center">{{ form.gcn_tcr_brasilia }}</td>
+                            </tr>
+                            <tr>
+                                <td>GCN/TCR</td>
+                                <td class="text-center">Rio de Janeiro</td>
+                                <td class="text-center">{{ form.gcn_tcr_rio }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="custom-border mt-3">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <td>Clima Espacial</td>
+                                <td class="text-center">{{ form.clima_espacial }}</td>
+                            </tr>
+                            <tr>
+                                <td>SSA/SDA</td>
+                                <td class="text-center">{{ form.ssa_sda }}</td>
+                            </tr>
+                            <tr>
+                                <td class="col-8">{{ form.descricao_operacao.label_tag }}</td>
+                                <td class="col-4 text-center">{{ form.descricao_operacao }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
                 <h4 class="m-0 text-center mt-5">Observações</h4>
                 <div class="custom-border mt-3">
                     <table class="table table-borderless">
@@ -284,7 +329,7 @@
                 </div>
 
                 <div class="text-center mt-5">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
                 </div>
             </form>
         </div>

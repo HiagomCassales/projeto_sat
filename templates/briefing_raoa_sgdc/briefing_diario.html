@@ -1,0 +1,93 @@
+<!-- briefing_raoa_sgdc/templates/briefing_raoa_sgdc/briefing_diario.html -->
+
+{% extends 'shared/base.html' %}
+
+{% block title %}Novo Briefing{% endblock %}
+
+{% block content %}
+<h1>Cadastrar Novo Briefing</h1>
+<style>
+    /* shared/static/css/styles.css */
+
+    .rectangle-select {
+        width: 100px;
+        height: 30px;
+        background-color: grey;
+        text-align: center;
+        border: 2px solid #ccc;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        padding: 0;
+        position: relative;
+        font-size: 0;
+        transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), inset 0 -2px 4px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+    }
+
+    .rectangle-select:hover {
+        transform: scale(1.05);
+    }
+
+    .rectangle-select option {
+        font-size: 16px;
+    }
+
+    .rectangle-select.select-OK {
+        background-color: green;
+        border-color: green;
+        box-shadow: 0 4px 6px rgba(0, 128, 0, 0.2), inset 0 -2px 4px rgba(0, 128, 0, 0.2);
+    }
+
+    .rectangle-select.select-WARN {
+        background-color: yellow;
+        border-color: yellow;
+        box-shadow: 0 4px 6px rgba(255, 255, 0, 0.2), inset 0 -2px 4px rgba(255, 255, 0, 0.2);
+    }
+
+    .rectangle-select.select-CRIT {
+        background-color: red;
+        border-color: red;
+        box-shadow: 0 4px 6px rgba(255, 0, 0, 0.2), inset 0 -2px 4px rgba(255, 0, 0, 0.2);
+    }
+
+    .rectangle-select.select-NORMAL {
+        background-color: blue;
+        border-color: blue;
+        box-shadow: 0 4px 6px rgba(0, 0, 255, 0.2), inset 0 -2px 4px rgba(0, 0, 255, 0.2);
+    }
+</style>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Salvar</button>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const rectangleSelects = document.querySelectorAll('.rectangle-select');
+
+        function setSelectColor(select) {
+            select.className = 'rectangle-select';
+            if (select.value === 'OK') {
+                select.classList.add('select-OK');
+            } else if (select.value === 'WARN') {
+                select.classList.add('select-WARN');
+            } else if (select.value === 'CRIT') {
+                select.classList.add('select-CRIT');
+            } else if (select.value === 'NORMAL') {
+                select.classList.add('select-NORMAL');
+            }
+        }
+
+        rectangleSelects.forEach(select => {
+            setSelectColor(select);
+            select.addEventListener('change', function () {
+                setSelectColor(select);
+            });
+        });
+    });
+</script>
+{% endblock %}

@@ -7,13 +7,55 @@
     <div class="col-md-6">
         <h2>Registrar</h2>
         {% if first_admin %}
-        <div class="alert alert-info">
+        <div class="alert alert-info persist">
             Não há administradores no sistema. O primeiro usuário registrado será um administrador.
         </div>
         {% endif %}
-        <form method="post" class="form">
+        <form method="post" class="needs-validation" novalidate>
             {% csrf_token %}
-            {{ form.as_p }}
+            <div class="form-group">
+                {{ form.username.label_tag }}
+                {{ form.username }}
+                {% if form.username.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.username.errors }}
+                </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.password1.label_tag }}
+                {{ form.password1 }}
+                {% if form.password1.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.password1.errors }}
+                </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.password2.label_tag }}
+                {{ form.password2 }}
+                {% if form.password2.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.password2.errors }}
+                </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.categories.label_tag }}
+                <div class="form-check">
+                    {% for checkbox in form.categories %}
+                        <div class="form-check">
+                            {{ checkbox.tag }}
+                            {{ checkbox.choice_label }}
+                        </div>
+                    {% endfor %}
+                    {% if form.categories.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.categories.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
             <button type="submit" class="btn btn-primary">Registrar</button>
         </form>
     </div>

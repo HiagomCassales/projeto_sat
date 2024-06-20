@@ -5,17 +5,31 @@
             <div class="container-fluid">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     {% if user.is_authenticated %}
-                        {% if user.category == 'admin' %}
+                        {% if is_admin %}
                             <li class="nav-item"><a class="nav-link" href="{% url 'admin_view' %}">Admin</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{% url 'sgdc_view' %}">SGDC</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{% url 'lessonia_view' %}">Lessonia</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{% url 'infraestruturas_criticas_view' %}">Infraestruturas Críticas</a></li>
-                        {% elif user.category == 'sgdc' %}
-                            <li class="nav-item"><a class="nav-link" href="{% url 'sgdc_view' %}">SGDC</a></li>
-                        {% elif user.category == 'lessonia' %}
-                            <li class="nav-item"><a class="nav-link" href="{% url 'lessonia_view' %}">Lessonia</a></li>
-                        {% elif user.category == 'infraestruturas_criticas' %}
-                            <li class="nav-item"><a class="nav-link" href="{% url 'infraestruturas_criticas_view' %}">Infraestruturas Críticas</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'sgdc:index' %}">SGDC</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'lessonia:index' %}">Lessonia</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'infraestrutura_critica:index' %}">Infraestruturas Críticas</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'clima_espacial:index' %}">Clima Espacial</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'contratos_imagens:index' %}">Contratos de Imagens</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'briefing_raoa_sgdc:index' %}">Raoa SGDC</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'briefing_raoa_lessonia:index' %}">Raoa Lessonia</a></li>
+                        {% else %}
+                            {% for category in user.categories.all %}
+                                {% if category.name == 'sgdc' %}
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'sgdc:index' %}">SGDC</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'briefing_raoa_sgdc:index' %}">Raoa SGDC</a></li>
+                                {% elif category.name == 'lessonia' %}
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'lessonia:index' %}">Lessonia</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'briefing_raoa_lessonia:index' %}">Raoa Lessonia</a></li>
+                                {% elif category.name == 'infraestrutura_critica' %}
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'infraestrutura_critica:index' %}">Infraestruturas Críticas</a></li>
+                                {% elif category.name == 'clima_espacial' %}
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'clima_espacial:index' %}">Clima Espacial</a></li>
+                                {% elif category.name == 'contratos_imagens' %}
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'contratos_imagens:index' %}">Contratos de Imagens</a></li>
+                                {% endif %}
+                            {% endfor %}
                         {% endif %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
                     {% else %}

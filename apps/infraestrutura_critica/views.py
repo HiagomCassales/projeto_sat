@@ -1,17 +1,17 @@
-# apps/infraestrutura_critica/views.py
-
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
+from django.contrib import messages
 from .models import InfraestruturaCritica
 from .forms import InfraestruturaCriticaForm
 from datetime import timedelta
 
 @login_required
 def index(request):
-    if request.user.category != 'infraestrutura_critica' and request.user.category != 'admin':
-        return HttpResponseForbidden("Você não tem permissão para acessar esta página.")
+    if not set(request.user.categories.values_list('name', flat=True)).intersection({'infraestrutura_critica', 'admin'}):
+        messages.error(request, "Você não tem permissão para acessar esta página.")
+        return redirect('post_login_redirect')
     
     today = timezone.now().date()
     briefing = InfraestruturaCritica.objects.filter(data=today).first()
@@ -21,11 +21,13 @@ def index(request):
 
 @login_required
 def new_briefing(request):
-    if request.user.category != 'infraestrutura_critica' and request.user.category != 'admin':
-        return HttpResponseForbidden("Você não tem permissão para acessar esta página.")
+    if not set(request.user.categories.values_list('name', flat=True)).intersection({'infraestrutura_critica', 'admin'}):
+        messages.error(request, "Você não tem permissão para acessar esta página.")
+        return redirect('post_login_redirect')
 
     today = timezone.now().date()
     if InfraestruturaCritica.objects.filter(data=today).exists():
+        messages.warning(request, 'Um briefing para hoje já existe.')
         return redirect('infraestrutura_critica:index')
     
     if request.method == 'POST':
@@ -34,7 +36,10 @@ def new_briefing(request):
             briefing = form.save(commit=False)
             briefing.data = today
             briefing.save()
+            messages.success(request, 'Briefing criado com sucesso.')
             return redirect('infraestrutura_critica:index')
+        else:
+            messages.error(request, 'Erro ao criar o briefing. Por favor, verifique os dados e tente novamente.')
     else:
         form = InfraestruturaCriticaForm()
     
@@ -42,15 +47,19 @@ def new_briefing(request):
 
 @login_required
 def edit_briefing(request, pk):
-    if request.user.category != 'infraestrutura_critica' and request.user.category != 'admin':
-        return HttpResponseForbidden("Você não tem permissão para acessar esta página.")
+    if not set(request.user.categories.values_list('name', flat=True)).intersection({'infraestrutura_critica', 'admin'}):
+        messages.error(request, "Você não tem permissão para acessar esta página.")
+        return redirect('post_login_redirect')
 
     briefing = get_object_or_404(InfraestruturaCritica, pk=pk)
     if request.method == 'POST':
         form = InfraestruturaCriticaForm(request.POST, instance=briefing)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Briefing atualizado com sucesso.')
             return redirect('infraestrutura_critica:index')
+        else:
+            messages.error(request, 'Erro ao atualizar o briefing. Por favor, verifique os dados e tente novamente.')
     else:
         form = InfraestruturaCriticaForm(instance=briefing)
     
@@ -58,17 +67,20 @@ def edit_briefing(request, pk):
 
 @login_required
 def delete_briefing(request, pk):
-    if request.user.category != 'infraestrutura_critica' and request.user.category != 'admin':
-        return HttpResponseForbidden("Você não tem permissão para acessar esta página.")
+    if not set(request.user.categories.values_list('name', flat=True)).intersection({'infraestrutura_critica', 'admin'}):
+        messages.error(request, "Você não tem permissão para acessar esta página.")
+        return redirect('post_login_redirect')
     
     briefing = get_object_or_404(InfraestruturaCritica, pk=pk)
     briefing.delete()
+    messages.success(request, 'Briefing deletado com sucesso.')
     return redirect('infraestrutura_critica:index')
 
 @login_required
 def week_briefings_list(request):
-    if request.user.category != 'infraestrutura_critica' and request.user.category != 'admin':
-        return HttpResponseForbidden("Você não tem permissão para acessar esta página.")
+    if not set(request.user.categories.values_list('name', flat=True)).intersection({'infraestrutura_critica', 'admin'}):
+        messages.error(request, "Você não tem permissão para acessar esta página.")
+        return redirect('post_login_redirect')
     
     briefings = InfraestruturaCritica.objects.all()
     weeks = {}
@@ -86,8 +98,9 @@ def week_briefings_list(request):
 
 @login_required
 def week_briefings_detail(request, year, week):
-    if request.user.category != 'infraestrutura_critica' and request.user.category != 'admin':
-        return HttpResponseForbidden("Você não tem permissão para acessar esta página.")
+    if not set(request.user.categories.values_list('name', flat=True)).intersection({'infraestrutura_critica', 'admin'}):
+        messages.error(request, "Você não tem permissão para acessar esta página.")
+        return redirect('post_login_redirect')
     
     first_day_of_week = timezone.datetime.strptime(f'{year}-W{week}-1', "%Y-W%W-%w").date()
     last_day_of_week = first_day_of_week + timedelta(days=6)

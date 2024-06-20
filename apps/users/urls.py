@@ -15,4 +15,5 @@ urlpatterns = [
     path('sgdc/', views.sgdc_view, name='sgdc_view'),
     path('lessonia/', views.lessonia_view, name='lessonia_view'),
     path('infraestruturas_criticas/', views.infraestruturas_criticas_view, name='infraestruturas_criticas_view'),
+    path('clima_espacial/', views.clima_espacial_view, name='clima_espacial_view'),
 ]

@@ -1,0 +1,13 @@
+{% extends 'shared/base.html' %}
+
+{% block title %}Novo Contrato de Imagens{% endblock %}
+
+{% block content %}
+<h1>Novo Contrato de Imagens</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Salvar</button>
+    <a href="{% url 'contratos_imagens:index' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

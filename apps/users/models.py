@@ -1,16 +1,23 @@
-# apps/users/models.py
-
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
 
-class User(AbstractUser):
+class Category(models.Model):
     CATEGORY_CHOICES = (
         ('admin', 'Admin'),
         ('sgdc', 'SGDC'),
         ('lessonia', 'Lessonia'),
         ('infraestrutura_critica', 'Infraestruturas Críticas'),
+        ('clima_espacial', 'Clima Espacial'),
+        ('contratos_imagens', 'Contratos de Imagens'),  # Nova categoria adicionada aqui
     )
-    category = models.CharField(max_length=25, choices=CATEGORY_CHOICES, default='sgdc')
+    name = models.CharField(max_length=25, choices=CATEGORY_CHOICES, unique=True)
+
+    def __str__(self):
+        return self.get_name_display()
+
+
+class User(AbstractUser):
+    categories = models.ManyToManyField(Category, blank=True)
     is_approved = models.BooleanField(default=False)
 
     groups = models.ManyToManyField(

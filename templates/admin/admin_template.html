@@ -1,3 +1,5 @@
+<!-- Template: admin_template.html -->
+
 {% extends 'shared/base.html' %}
 
 {% block title %}Admin Dashboard{% endblock %}
@@ -16,7 +18,7 @@
     <thead>
         <tr>
             <th>Usuário</th>
-            <th>Categoria</th>
+            <th>Categorias</th>
             <th>Ação</th>
         </tr>
     </thead>
@@ -24,7 +26,7 @@
         {% for user in pending_users %}
         <tr>
             <td>{{ user.username }}</td>
-            <td>{{ user.get_category_display }}</td>
+            <td>{{ user.categories.all|join:", " }}</td>
             <td>
                 <form method="post" action="{% url 'approve_user' user.id %}" style="display:inline;">
                     {% csrf_token %}
@@ -49,7 +51,7 @@
     <thead>
         <tr>
             <th>Usuário</th>
-            <th>Categoria</th>
+            <th>Categorias</th>
             <th>Ação</th>
         </tr>
     </thead>
@@ -57,7 +59,7 @@
         {% for user in approved_users %}
         <tr>
             <td>{{ user.username }}</td>
-            <td>{{ user.get_category_display }}</td>
+            <td>{{ user.categories.all|join:", " }}</td>
             <td>
                 <form method="post" action="{% url 'delete_user' user.id %}" style="display:inline;">
                     {% csrf_token %}
@@ -65,12 +67,12 @@
                 </form>
                 <form method="post" action="{% url 'change_category' user.id %}" style="display:inline;">
                     {% csrf_token %}
-                    <select name="category" class="form-control d-inline" style="width: auto;">
-                        {% for category in user.CATEGORY_CHOICES %}
-                            <option value="{{ category.0 }}" {% if user.category == category.0 %}selected{% endif %}>{{ category.1 }}</option>
+                    <select name="categories" class="form-control d-inline" multiple style="width: auto;">
+                        {% for category in categories %}
+                            <option value="{{ category.id }}" {% if category in user.categories.all %}selected{% endif %}>{{ category.get_name_display }}</option>
                         {% endfor %}
                     </select>
-                    <button type="submit" class="btn btn-primary">Alterar Categoria</button>
+                    <button type="submit" class="btn btn-primary">Alterar Categorias</button>
                 </form>
             </td>
         </tr>

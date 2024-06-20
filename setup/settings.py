@@ -41,6 +41,10 @@ INSTALLED_APPS = [
     'apps.sgdc',
     'apps.lessonia',
     'apps.infraestrutura_critica',
+    'apps.clima_espacial',
+    'apps.contratos_imagens',
+    'apps.briefing_raoa_sgdc',
+    'apps.briefing_raoa_lessonia',
 ]
 
 MIDDLEWARE = [
@@ -66,6 +70,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'apps.users.context_processors.user_categories',
             ],
         },
     },
