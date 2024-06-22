@@ -34,3 +34,10 @@ class User(AbstractUser):
         help_text='Specific permissions for this user.',
         verbose_name='user permissions',
     )
+
+class Contato(models.Model):
+    nome = models.CharField(max_length=100)
+    numero = models.CharField(max_length=15)
+
+    def __str__(self):
+        return self.nome

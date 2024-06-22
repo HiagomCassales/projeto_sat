@@ -21,6 +21,7 @@ from apps.users import views as user_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('apps.users.urls')),
+    path('login/', user_views.login_view, name='login'),
     path('', user_views.login_view, name='login'),
     path('post_login_redirect/', user_views.post_login_redirect, name='post_login_redirect'),
     path('sgdc/', include('apps.sgdc.urls', namespace='sgdc')),
@@ -30,6 +31,7 @@ urlpatterns = [
     path('contratos_imagens/', include('apps.contratos_imagens.urls', namespace='contratos_imagens')),
     path('briefing_raoa_sgdc/', include('apps.briefing_raoa_sgdc.urls', namespace='briefing_raoa_sgdc')),
     path('briefing_raoa_lessonia/', include('apps.briefing_raoa_lessonia.urls', namespace='briefing_raoa_lessonia')),
+    path('report/', include('apps.report.urls', namespace='report')),
 ]
 
 

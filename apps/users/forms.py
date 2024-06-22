@@ -2,7 +2,7 @@
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import User, Category
+from .models import User, Category, Contato
 
 class UserRegisterForm(UserCreationForm):
     categories = forms.ModelMultipleChoiceField(
@@ -28,3 +28,9 @@ class UserRegisterForm(UserCreationForm):
         self.fields['password1'].widget.attrs.update({'class': 'form-control'})
         self.fields['password2'].widget.attrs.update({'class': 'form-control'})
         self.fields['categories'].widget.attrs.update({'class': 'form-check-input'})
+
+class ContatoForm(forms.ModelForm):
+    class Meta:
+        model = Contato
+        fields = ['nome', 'numero']
+

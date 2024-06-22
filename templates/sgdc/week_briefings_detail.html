@@ -1,36 +1,108 @@
 {% extends 'shared/base.html' %}
-
+{% load static %}
 {% block title %}Briefings da Semana {{ first_day_of_week|date:"d/m/Y" }} - {{ last_day_of_week|date:"d/m/Y" }}{% endblock %}
 
 {% block content %}
-<h1>Briefings da Semana {{ first_day_of_week|date:"d/m/Y" }} - {{ last_day_of_week|date:"d/m/Y" }}</h1>
+<div class="container-fluid mt-4 bg-dark text-light">
+    <div class="row mb-3">
+        <div class="col-12 d-flex justify-content-between align-items-center bg-dark-transparent text-white p-2 rounded">
+            <h4 class="m-0 text-light">Briefings da Semana {{ first_day_of_week|date:"d/m/Y" }} - {{ last_day_of_week|date:"d/m/Y" }}</h4>
+            <button id="toggleView" class="btn btn-info btn-sm">Visualizar Colunas</button>
+        </div>
+    </div>
 
-<div class="row">
-    {% for day, briefing in briefings %}
-        <div class="col-md-4">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h5 class="card-title">{{ day|date:"l, d/m/Y" }}</h5>
-                </div>
-                <div class="card-body">
-                    {% if briefing %}
-                        <p><strong>Plataforma Saúde:</strong> {{ briefing.plataforma_saude }}</p>
-                        <p><strong>Próxima Manobra:</strong> {{ briefing.prox_manobra }}</p>
-                        <p><strong>Infra Crítica Brasília:</strong> {{ briefing.infra_critica_brasilia }}</p>
-                        <p><strong>Infra Crítica Rio:</strong> {{ briefing.infra_critica_rio }}</p>
-                        <p><strong>GCN/TCR Brasília:</strong> {{ briefing.gcn_tcr_brasilia }}</p>
-                        <p><strong>GCN/TCR Rio:</strong> {{ briefing.gcn_tcr_rio }}</p>
-                        <p><strong>Clima Espacial:</strong> {{ briefing.clima_espacial }}</p>
-                        <p><strong>SSA/SDA:</strong> {{ briefing.ssa_sda }}</p>
-                        <p><strong>Descrição da Operação:</strong> {{ briefing.descricao_operacao }}</p>
-                        <a href="{% url 'sgdc:edit_briefing' briefing.pk %}" class="btn btn-warning btn-sm">Editar</a>
-                        <a href="{% url 'sgdc:delete_briefing' briefing.pk %}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este briefing?');">Remover</a>
-                    {% else %}
-                        <p>Nenhum briefing cadastrado para este dia.</p>
-                    {% endif %}
+    <div class="row no-gutters" id="briefingsContainer">
+        {% for day, briefing in briefings %}
+            <div class="col-lg-1-7 col-md-3 col-sm-6 mb-4">
+                <div class="card h-100 shadow-sm bg-secondary text-light">
+                    <div class="card-header bg-dark text-white">
+                        <h6 class="card-title m-0 text-light">{{ day|date:"l, d/m/Y" }}</h6>
+                    </div>
+                    <div class="card-body">
+                        <img src="{% static 'assets/img/planeta-terra.webp' %}" class="img-fluid mb-3" alt="Imagem do Planeta Terra">
+                        {% if briefing %}
+                            <p><strong>Plataforma Saúde:</strong> {{ briefing.plataforma_saude }}</p>
+                            <p><strong>Próxima Manobra:</strong> {{ briefing.prox_manobra }}</p>
+                            <div class="d-flex align-items-center mb-2">
+                                <p class="mb-0"><strong>Infra Crítica:</strong></p>
+                                <div class="badge large-badge ms-2 {% if briefing.infra_critica_brasilia == 'OK' %}bg-success{% elif briefing.infra_critica_brasilia == 'CRIT' %}bg-danger{% endif %}">BR</div>
+                                <div class="badge large-badge ms-4 {% if briefing.infra_critica_rio == 'OK' %}bg-success{% elif briefing.infra_critica_rio == 'CRIT' %}bg-danger{% endif %}">RIO</div>
+                            </div>
+                            <p><strong>GCN/TCR Brasília:</strong> {{ briefing.gcn_tcr_brasilia }}</p>
+                            <p><strong>GCN/TCR Rio:</strong> {{ briefing.gcn_tcr_rio }}</p>
+                            <p><strong>Clima Espacial:</strong> {{ briefing.clima_espacial }}</p>
+                            <p><strong>SSA/SDA:</strong> {{ briefing.ssa_sda }}</p>
+                            <p><strong>Descrição da Operação:</strong> {{ briefing.descricao_operacao }}</p>
+                            <div class="d-flex justify-content-between">
+                                <a href="{% url 'sgdc:edit_briefing' briefing.pk %}" class="btn btn-warning btn-sm">Editar</a>
+                                <a href="{% url 'sgdc:delete_briefing' briefing.pk %}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este briefing?');">Remover</a>
+                            </div>
+                        {% else %}
+                            <p>Nenhum briefing cadastrado para este dia.</p>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
 </div>
+
+<script>
+    document.getElementById('toggleView').addEventListener('click', function() {
+        var briefingsContainer = document.getElementById('briefingsContainer');
+        if (briefingsContainer.classList.contains('row-cols-1')) {
+            briefingsContainer.classList.remove('row-cols-1');
+            briefingsContainer.classList.add('row-cols-7');
+        } else {
+            briefingsContainer.classList.remove('row-cols-7');
+            briefingsContainer.classList.add('row-cols-1');
+        }
+    });
+</script>
+
+<style>
+    .col-lg-1-7 {
+        flex: 0 0 14.2857%;
+        max-width: 14.2857%;
+    }
+    .bg-dark-transparent {
+        background-color: rgba(0, 0, 0, 0.7);
+    }
+    .no-gutters {
+        margin-right: 0;
+        margin-left: 0;
+    }
+    .no-gutters > .col,
+    .no-gutters > [class*="col-"] {
+        padding-right: 0;
+        padding-left: 0;
+    }
+    .badge {
+        display: inline-block;
+        padding: 0.75em 1.5em;
+        font-size: 100%;
+        font-weight: 700;
+        line-height: 1;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: 0.25rem;
+    }
+    .large-badge {
+        padding: 0.75em 1.5em;
+        font-size: 100%;
+    }
+    .bg-success {
+        background-color: #28a745 !important;
+    }
+    .bg-danger {
+        background-color: #dc3545 !important;
+    }
+    .ms-4 {
+        margin-left: 1.5rem !important;
+    }
+    .text-light {
+        color: #f8f9fa !important;
+    }
+</style>
 {% endblock %}

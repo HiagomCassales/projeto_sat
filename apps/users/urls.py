@@ -16,4 +16,5 @@ urlpatterns = [
     path('lessonia/', views.lessonia_view, name='lessonia_view'),
     path('infraestruturas_criticas/', views.infraestruturas_criticas_view, name='infraestruturas_criticas_view'),
     path('clima_espacial/', views.clima_espacial_view, name='clima_espacial_view'),
+    path('delete_contact/<int:contact_id>/', views.delete_contact, name='delete_contact'),
 ]

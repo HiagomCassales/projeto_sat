@@ -1,42 +1,200 @@
-<header class="bg-dark text-white p-3">
+{% load static %}
+<style>
+    .formContainer {
+        padding: 24px;
+        width: 100%;
+        max-width: 320px;
+        margin: 0 auto;
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 10px;
+    }
+    .formContainer input {
+        height: 48px;
+        padding-left: 48px;
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        color: #fff;
+    }
+    .btn-accent:active {
+        box-shadow: 0px 0px 2px #1e90ff;
+    }
+    .formContainer input:focus {
+        box-shadow: 0px 0px 2px #1e90ff;
+        background: rgba(255, 255, 255, 0.7);
+    }
+    .inputLogo {
+        position: absolute;
+        margin-top: 12px;
+        margin-left: 18px;
+        color: #fff;
+    }
+    #mainBgn {
+        background: url('{% static "assets/img/i326843.jpeg" %}') no-repeat;
+        background-size: cover;
+        background-position: center;
+        height: 100vh;
+    }
+    .btn-accent {
+        background: rgb(30, 144, 255);
+        background: -moz-linear-gradient(top, rgba(30, 144, 255, 1) 0%, rgba(70, 130, 180, 1) 100%);
+        background: -webkit-linear-gradient(top, rgba(30, 144, 255, 1) 0%, rgba(70, 130, 180, 1) 100%);
+        background: linear-gradient(to bottom, rgba(30, 144, 255, 1) 0%, rgba(70, 130, 180, 1) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#1e90ff', endColorstr='#4682b4', GradientType=0);
+        height: 48px;
+        color: #fff;
+        border: none;
+    }
+    .btn-accent:hover {
+        background: rgb(70, 130, 180);
+        background: -moz-linear-gradient(top, rgba(70, 130, 180, 1) 0%, rgba(30, 144, 255, 1) 100%);
+        background: -webkit-linear-gradient(top, rgba(70, 130, 180, 1) 0%, rgba(30, 144, 255, 1) 100%);
+        background: linear-gradient(to bottom, rgba(70, 130, 180, 1) 0%, rgba(30, 144, 255, 1) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4682b4', endColorstr='#1e90ff', GradientType=0);
+        color: #fff;
+    }
+    ::placeholder {
+        color: #ececec !important;
+    }
+    .logo-container img {
+        border-radius: 5px;
+        width: 100%;
+    }
+    .navbar-nav .nav-item .nav-link {
+        font-size: 1rem;
+        color: #fff;
+    }
+    header .container {
+        position: relative;
+        z-index: 2;
+    }
+    header h1 {
+        text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+    }
+    .navbar {
+        background: rgba(34, 34, 34, 0.9);
+        padding: 10px 20px;
+        border-radius: 5px;
+    }
+    .navbar-toggler {
+        border-color: rgba(255, 255, 255, 0.5);
+    }
+    .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+    }
+    .navbar-nav {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .nav-item {
+        margin: 0 10px;
+    }
+    .nav-item .nav-link {
+        color: #ffffff;
+        padding: 8px 15px;
+    }
+    .nav-item .nav-link:hover {
+        color: #cccccc;
+    }
+    .nav-divider {
+        background-color: #666;
+        width: 1px;
+        height: 24px;
+        margin: 0 10px;
+    }
+    .navbar-collapse {
+        justify-content: space-between;
+    }
+    .navbar-brand {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #fff;
+    }
+</style>
+<header class="bg-dark text-white p-3" style="background: url('{% static "assets/img/i326843.jpeg" %}') no-repeat; background-size: cover; background-position: center;">
     <div class="container">
-        <h1>Meu Projeto</h1>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <h1 class="display-4">Orbital Report</h1>
+        <nav class="navbar navbar-expand-lg navbar-dark mt-3">
             <div class="container-fluid">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    {% if user.is_authenticated %}
-                        {% if is_admin %}
-                            <li class="nav-item"><a class="nav-link" href="{% url 'admin_view' %}">Admin</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{% url 'sgdc:index' %}">SGDC</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{% url 'lessonia:index' %}">Lessonia</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{% url 'infraestrutura_critica:index' %}">Infraestruturas Críticas</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{% url 'clima_espacial:index' %}">Clima Espacial</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{% url 'contratos_imagens:index' %}">Contratos de Imagens</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{% url 'briefing_raoa_sgdc:index' %}">Raoa SGDC</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{% url 'briefing_raoa_lessonia:index' %}">Raoa Lessonia</a></li>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        {% if user.is_authenticated %}
+                            {% if is_admin %}
+                                <li class="nav-item"><a class="nav-link" href="{% url 'admin_view' %}">Admin</a></li>
+                                <div class="nav-divider"></div>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownSGDC" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        SGDC
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownSGDC">
+                                        <li><a class="dropdown-item" href="{% url 'sgdc:index' %}">SGDC</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'briefing_raoa_sgdc:index' %}">Raoa SGDC</a></li>
+                                    </ul>
+                                </li>
+                                <div class="nav-divider"></div>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownLessonia" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Lessonia
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownLessonia">
+                                        <li><a class="dropdown-item" href="{% url 'lessonia:index' %}">Lessonia</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'briefing_raoa_lessonia:index' %}">Raoa Lessonia</a></li>
+                                    </ul>
+                                </li>
+                                <div class="nav-divider"></div>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'infraestrutura_critica:index' %}">Infraestruturas Críticas</a></li>
+                                <div class="nav-divider"></div>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'clima_espacial:index' %}">Clima Espacial</a></li>
+                                <div class="nav-divider"></div>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'contratos_imagens:index' %}">Contratos de Imagens</a></li>
+                            {% else %}
+                                {% for category in user.categories.all %}
+                                    {% if category.name == 'sgdc' %}
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownSGDCUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                SGDC
+                                            </a>
+                                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownSGDCUser">
+                                                <li><a class="dropdown-item" href="{% url 'sgdc:index' %}">SGDC</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'briefing_raoa_sgdc:index' %}">Raoa SGDC</a></li>
+                                            </ul>
+                                        </li>
+                                        <div class="nav-divider"></div>
+                                    {% elif category.name == 'lessonia' %}
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownLessoniaUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Lessonia
+                                            </a>
+                                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownLessoniaUser">
+                                                <li><a class="dropdown-item" href="{% url 'lessonia:index' %}">Lessonia</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'briefing_raoa_lessonia:index' %}">Raoa Lessonia</a></li>
+                                            </ul>
+                                        </li>
+                                        <div class="nav-divider"></div>
+                                    {% elif category.name == 'infraestrutura_critica' %}
+                                        <li class="nav-item"><a class="nav-link" href="{% url 'infraestrutura_critica:index' %}">Infraestruturas Críticas</a></li>
+                                        <div class="nav-divider"></div>
+                                    {% elif category.name == 'clima_espacial' %}
+                                        <li class="nav-item"><a class="nav-link" href="{% url 'clima_espacial:index' %}">Clima Espacial</a></li>
+                                        <div class="nav-divider"></div>
+                                    {% elif category.name == 'contratos_imagens' %}
+                                        <li class="nav-item"><a class="nav-link" href="{% url 'contratos_imagens:index' %}">Contratos de Imagens</a></li>
+                                        <div class="nav-divider"></div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+
+                            <li class="nav-item"><a class="nav-link" href="{% url 'report:report_view' %}">Relatório Diário</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
                         {% else %}
-                            {% for category in user.categories.all %}
-                                {% if category.name == 'sgdc' %}
-                                    <li class="nav-item"><a class="nav-link" href="{% url 'sgdc:index' %}">SGDC</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="{% url 'briefing_raoa_sgdc:index' %}">Raoa SGDC</a></li>
-                                {% elif category.name == 'lessonia' %}
-                                    <li class="nav-item"><a class="nav-link" href="{% url 'lessonia:index' %}">Lessonia</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="{% url 'briefing_raoa_lessonia:index' %}">Raoa Lessonia</a></li>
-                                {% elif category.name == 'infraestrutura_critica' %}
-                                    <li class="nav-item"><a class="nav-link" href="{% url 'infraestrutura_critica:index' %}">Infraestruturas Críticas</a></li>
-                                {% elif category.name == 'clima_espacial' %}
-                                    <li class="nav-item"><a class="nav-link" href="{% url 'clima_espacial:index' %}">Clima Espacial</a></li>
-                                {% elif category.name == 'contratos_imagens' %}
-                                    <li class="nav-item"><a class="nav-link" href="{% url 'contratos_imagens:index' %}">Contratos de Imagens</a></li>
-                                {% endif %}
-                            {% endfor %}
+                            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
                         {% endif %}
-                        <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
-                    {% else %}
-                        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
-                    {% endif %}
-                </ul>
+                    </ul>
+                </div>
             </div>
         </nav>
     </div>

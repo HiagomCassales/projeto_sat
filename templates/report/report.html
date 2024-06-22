@@ -1,0 +1,146 @@
+
+{% extends 'shared/base.html' %}
+
+{% block title %}Relatório Diário{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #f4f4f9;
+    }
+    .container {
+        margin-top: 50px;
+    }
+    .dashboard-header {
+        background-color: #002147;
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+    }
+    .dashboard-header h1 {
+        margin: 0;
+        font-size: 2.5rem;
+    }
+    .btn-category {
+        background-color: #0056b3;
+        color: white;
+        border: none;
+        margin: 10px;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 1.2rem;
+        text-align: center;
+        display: block;
+        width: 100%;
+        transition: background-color 0.3s;
+    }
+    .btn-category:hover {
+        background-color: #004494;
+        text-decoration: none;
+        color: white;
+    }
+    .chart-container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+    }
+    .chart-title {
+        text-align: center;
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        color: #333;
+    }
+    .legend-container {
+        margin-top: 10px;
+    }
+    .legend-container .legend-item {
+        display: inline-block;
+        margin-right: 10px;
+    }
+    .legend-container .legend-color {
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        margin-right: 5px;
+        vertical-align: middle;
+    }
+    .legend-nominal {
+        background-color: rgba(75, 192, 192, 1);
+    }
+    .legend-ruim {
+        background-color: rgba(255, 99, 132, 1);
+    }
+    .legend-inoperante {
+        background-color: rgba(128, 128, 128, 1);
+    }
+    .table-container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+    }
+    .table-container h2 {
+        text-align: center;
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        color: #333;
+    }
+    .table {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    .table th, .table td {
+        padding: 10px;
+        text-align: left;
+    }
+    .btn {
+        margin-right: 5px;
+    }
+</style>
+<h1>Relatório do Dia: {{ data }}</h1>
+
+<h2>Espacial Segment</h2>
+{% for item in espacial_segments %}
+    <p>{{ item }}</p>
+{% empty %}
+    <p>Nenhum dado encontrado para essa data.</p>
+{% endfor %}
+
+<h2>Lessonia</h2>
+{% for item in lessonias %}
+    <p>{{ item }}</p>
+{% empty %}
+    <p>Nenhum dado encontrado para essa data.</p>
+{% endfor %}
+
+<h2>Infraestrutura Crítica</h2>
+{% for item in infraestruturas %}
+    <p>{{ item }}</p>
+{% empty %}
+    <p>Nenhum dado encontrado para essa data.</p>
+{% endfor %}
+
+<h2>Contratos de Imagens</h2>
+{% for item in contratos %}
+    <p>{{ item }}</p>
+{% empty %}
+    <p>Nenhum dado encontrado para essa data.</p>
+{% endfor %}
+
+<h2>Clima Espacial</h2>
+{% for item in climas %}
+    <p>{{ item }}</p>
+{% empty %}
+    <p>Nenhum dado encontrado para essa data.</p>
+{% endfor %}
+
+<form method="get">
+    <label for="data">Escolha a data:</label>
+    <input type="date" id="data" name="data" value="{{ data }}">
+    <button type="submit">Buscar</button>
+</form>
+{% endblock %}

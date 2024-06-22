@@ -1,0 +1,36 @@
+{% extends 'shared/base.html' %}
+
+{% block title %}Briefings da Semana {{ first_day_of_week|date:"d/m/Y" }} - {{ last_day_of_week|date:"d/m/Y" }}{% endblock %}
+
+{% block content %}
+<h1>Briefings da Semana {{ first_day_of_week|date:"d/m/Y" }} - {{ last_day_of_week|date:"d/m/Y" }}</h1>
+
+<div class="row">
+    {% for day, briefing in briefings %}
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title">{{ day|date:"l, d/m/Y" }}</h5>
+                </div>
+                <div class="card-body">
+                    {% if briefing %}
+                        <p><strong>Plataforma Saúde:</strong> {{ briefing.plataforma_saude }}</p>
+                        <p><strong>Próxima Manobra:</strong> {{ briefing.prox_manobra }}</p>
+                        <p><strong>Infra Crítica Brasília:</strong> {{ briefing.infra_critica_brasilia }}</p>
+                        <p><strong>Infra Crítica Rio:</strong> {{ briefing.infra_critica_rio }}</p>
+                        <p><strong>GCN/TCR Brasília:</strong> {{ briefing.gcn_tcr_brasilia }}</p>
+                        <p><strong>GCN/TCR Rio:</strong> {{ briefing.gcn_tcr_rio }}</p>
+                        <p><strong>Clima Espacial:</strong> {{ briefing.clima_espacial }}</p>
+                        <p><strong>SSA/SDA:</strong> {{ briefing.ssa_sda }}</p>
+                        <p><strong>Descrição da Operação:</strong> {{ briefing.descricao_operacao }}</p>
+                        <a href="{% url 'sgdc:edit_briefing' briefing.pk %}" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="{% url 'sgdc:delete_briefing' briefing.pk %}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este briefing?');">Remover</a>
+                    {% else %}
+                        <p>Nenhum briefing cadastrado para este dia.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

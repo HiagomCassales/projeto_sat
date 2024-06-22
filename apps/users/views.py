@@ -4,8 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as auth_login, logout as auth_logout
-from .forms import UserRegisterForm
-from .models import User, Category
+from .forms import UserRegisterForm, ContatoForm 
+from .models import User, Category, Contato 
 
 def register(request):
     first_admin = not User.objects.filter(categories__name='admin').exists()
@@ -76,16 +76,41 @@ def post_login_redirect(request):
 def admin_view(request):
     if 'admin' not in request.user.categories.values_list('name', flat=True):
         return HttpResponseForbidden()
+    
+    # Processamento do formulário de contatos
+    contatos = Contato.objects.all()
+    if request.method == "POST":
+        form = ContatoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Contato adicionado com sucesso!')
+            return redirect('admin_view')
+    else:
+        form = ContatoForm()
+
     pending_users = User.objects.filter(is_approved=False, is_active=False)
     approved_users = User.objects.filter(is_approved=True, is_active=True)
     categories = Category.objects.all()
     is_admin = 'admin' in request.user.categories.values_list('name', flat=True)
+    
     return render(request, 'admin/admin_template.html', {
         'pending_users': pending_users,
         'approved_users': approved_users,
         'categories': categories,
         'is_admin': is_admin,
+        'form': form,  # Passando o formulário para o template
+        'contatos': contatos,  # Passando os contatos para o template
     })
+
+@login_required
+def delete_contact(request, contact_id):
+    if 'admin' not in request.user.categories.values_list('name', flat=True):
+        return HttpResponseForbidden()
+    
+    contato = get_object_or_404(Contato, id=contact_id)
+    contato.delete()
+    messages.success(request, f'O contato {contato.nome} foi excluído com sucesso.')
+    return redirect('admin_view')
 
 @login_required
 def approve_user(request, user_id):

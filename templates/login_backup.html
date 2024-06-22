@@ -1,0 +1,87 @@
+{% extends 'shared/base.html' %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .formContainer {
+      padding: 24px;
+      width: 100%;
+      max-width: 320px;
+      margin: 0 auto;
+    }
+    .formContainer input {
+      height: 48px;
+      padding-left: 48px;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #fff;
+    }
+    .btn-accent:active {
+      box-shadow: 0px 0px 2px #1e90ff;
+    }
+    .formContainer input:focus {
+      box-shadow: 0px 0px 2px #1e90ff;
+      background: rgba(255, 255, 255, 0.7);
+    }
+        .inputLogo {
+            position: absolute;
+            margin-top: 12px;
+            margin-left: 18px;
+            color: #fff;
+        }
+    #mainBgn {
+      background: url('https://i.makeagif.com/media/7-02-2021/fQbzFo.gif') no-repeat;
+      background-size: cover;
+      background-position: center bottom;
+    }
+    .btn-accent {
+      background: rgb(30, 144, 255); /* Old browsers */
+      background: -moz-linear-gradient(top, rgba(30, 144, 255, 1) 0%, rgba(70, 130, 180, 1) 100%); /* FF3.6-15 */
+      background: -webkit-linear-gradient(top, rgba(30, 144, 255, 1) 0%, rgba(70, 130, 180, 1) 100%); /* Chrome10-25,Safari5.1-6 */
+      background: linear-gradient(to bottom, rgba(30, 144, 255, 1) 0%, rgba(70, 130, 180, 1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#1e90ff', endColorstr='#4682b4', GradientType=0); /* IE6-9 */
+      height: 48px;
+      color: #fff;
+      border: none;
+    }
+    .btn-accent:hover {
+      background: rgb(70, 130, 180); /* Old browsers */
+      background: -moz-linear-gradient(top, rgba(70, 130, 180, 1) 0%, rgba(30, 144, 255, 1) 100%); /* FF3.6-15 */
+      background: -webkit-linear-gradient(top, rgba(70, 130, 180, 1) 0%, rgba(30, 144, 255, 1) 100%); /* Chrome10-25,Safari5.1-6 */
+      background: linear-gradient(to bottom, rgba(70, 130, 180, 1) 0%, rgba(30, 144, 255, 1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4682b4', endColorstr='#1e90ff', GradientType=0); /* IE6-9 */
+      color: #fff;
+    }
+    ::placeholder {
+      color: #ececec !important;
+    }
+</style>
+  
+<div class="vh-100 w-100 d-flex align-items-center" id="mainBgn">
+    <div class="formContainer">
+        <div class="text-center mb-4 pb-3">
+            <div class="logo-container">
+                <img src="https://www2.fab.mil.br/incaer/images/eventgallery/SISCULT/Heraldica/Emblemas/Imagens/comae.gif" alt="Company Logo" height="100">
+            </div>
+        </div>
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div>
+                <span class="inputLogo"><i class="fas fa-user"></i></span>
+                <input type="text" class="form-control rounded-pill" name="username" placeholder="Username" required>
+            </div>
+            <div class="my-2">
+                <span class="inputLogo"><i class="fas fa-key"></i></span>
+                <input type="password" class="form-control rounded-pill" name="password" placeholder="Password" required>
+            </div>
+            <button class="btn btn-accent rounded-pill w-100" type="submit">Login</button>
+        </form>
+    </div>
+</div>
+
+{% block footer %}
+{% endblock %}
+{% endblock %}
