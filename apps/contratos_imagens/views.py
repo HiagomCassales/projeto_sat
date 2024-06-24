@@ -23,17 +23,14 @@ def new_contrato(request):
     if not set(request.user.categories.values_list('name', flat=True)).intersection({'contratos_imagens', 'admin'}):
         messages.error(request, "Você não tem permissão para acessar esta página.")
         return redirect('post_login_redirect')
-    
-    today = timezone.now().date()
-    if ContratosImagens.objects.filter(data=today).exists():
-        messages.warning(request, 'Um contrato para hoje já existe.')
-        return redirect('contratos_imagens:index')
-    
+
     if request.method == 'POST':
         form = ContratosImagensForm(request.POST)
         if form.is_valid():
             contrato = form.save(commit=False)
-            contrato.data = today
+            if ContratosImagens.objects.filter(data=contrato.data).exists():
+                messages.error(request, 'Já existe um contrato para esta data.')
+                return redirect('contratos_imagens:new_contrato')
             contrato.save()
             messages.success(request, 'Contrato criado com sucesso.')
             return redirect('contratos_imagens:index')

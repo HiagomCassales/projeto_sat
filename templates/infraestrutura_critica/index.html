@@ -3,80 +3,65 @@
 {% block title %}Briefing Diário Infraestrutura Crítica{% endblock %}
 
 {% block content %}
-<h1>Briefing Diário Infraestrutura Crítica</h1>
-{% if not briefing %}
-    <a href="{% url 'infraestrutura_critica:new_briefing' %}" class="btn btn-primary">Cadastrar Briefing de Hoje</a>
-{% endif %}
+<div class="container mt-4">
+    <div class="row align-items-center mb-3 bg-light text-dark p-2 shadow-sm rounded">
+        <div class="col-md-6">
+            <h4 class="m-0">Briefing Diário Infraestrutura Crítica</h4>
+        </div>
+        <div class="col-md-6 text-end">
+                <a href="{% url 'infraestrutura_critica:new_briefing' %}" class="btn btn-primary">Cadastrar Briefing de Hoje</a>
+            <!-- <a href="{% url 'infraestrutura_critica:week_briefings_list' %}" class="btn btn-secondary">Ver Briefings Semanais</a> -->
+        </div>
+    </div>
 
-<div class="mt-4">
-    <a href="{% url 'infraestrutura_critica:week_briefings_list' %}" class="btn btn-secondary">Ver Briefings Semanais</a>
+    <div class="row mt-4">
+        <div class="table-responsive">
+            <table id="briefingsTable" class="table table-striped table-bordered" style="width:100%">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Data</th>
+                        <th>GMG 1.1 Brasília</th>
+                        <th>GMG 1.1 Rio de Janeiro</th>
+                        <th>URL 1.1 Brasília</th>
+                        <th>URL 1.1 Rio de Janeiro</th>
+                        <th>Combate a Incêndio Brasília</th>
+                        <th>Combate a Incêndio Rio de Janeiro</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for briefing in briefings %}
+                    <tr>
+                        <td>{{ briefing.data|date:"d/m/Y" }}</td>
+                        <td>{{ briefing.gmg1_1_brasilia }}</td>
+                        <td>{{ briefing.gmg1_1_rio }}</td>
+                        <td>{{ briefing.url1_1_brasilia }}</td>
+                        <td>{{ briefing.url1_1_rio }}</td>
+                        <td>{{ briefing.combate_incendio_brasilia }}</td>
+                        <td>{{ briefing.combate_incendio_rio }}</td>
+                        <td>
+                            <a href="{% url 'infraestrutura_critica:edit_briefing' briefing.pk %}" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="{% url 'infraestrutura_critica:delete_briefing' briefing.pk %}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este briefing?');">Remover</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
-
-<h2 class="mt-4">Briefings Cadastrados</h2>
-<table id="briefingsTable" class="table table-striped table-bordered" style="width:100%">
-    <thead>
-        <tr>
-            <th>Data</th>
-            <th>GMG 1.1 Brasília</th>
-            <th>GMG 1.1 Rio de Janeiro</th>
-            <th>URL 1.1 Brasília</th>
-            <th>URL 1.1 Rio de Janeiro</th>
-            <th>Combate a Incêndio Brasília</th>
-            <th>Combate a Incêndio Rio de Janeiro</th>
-            <th>Ações</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for briefing in briefings %}
-        <tr>
-            <td>{{ briefing.data|date:"d/m/Y" }}</td>
-            <td>{{ briefing.gmg1_1_brasilia }}</td>
-            <td>{{ briefing.gmg1_1_rio }}</td>
-            <td>{{ briefing.url1_1_brasilia }}</td>
-            <td>{{ briefing.url1_1_rio }}</td>
-            <td>{{ briefing.combate_incendio_brasilia }}</td>
-            <td>{{ briefing.combate_incendio_rio }}</td>
-            <td>
-                <a href="{% url 'infraestrutura_critica:edit_briefing' briefing.pk %}" class="btn btn-warning btn-sm">Editar</a>
-                <a href="{% url 'infraestrutura_critica:delete_briefing' briefing.pk %}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este briefing?');">Remover</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
 
 <!-- DataTables CSS -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.bootstrap5.min.css">
+
 <!-- DataTables JS -->
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.bootstrap5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        var showAddButton = {{ briefing|yesno:"false,true" }};
-        
         var table = new DataTable('#briefingsTable', {
-            buttons: [
-                {
-                    text: 'Adicionar Briefing',
-                    action: function (e, dt, node, config) {
-                        window.location.href = "{% url 'infraestrutura_critica:new_briefing' %}";
-                    },
-                    className: 'btn btn-primary'
-                }
-            ],
-            dom: 'Bfrtip'
+            dom: 'frtip'
         });
-
-        if (!showAddButton) {
-            table.buttons().container().appendTo('#briefingsTable_wrapper .col-md-6:eq(0)');
-        } else {
-            table.buttons().disable();
-        }
     });
 </script>
 {% endblock %}

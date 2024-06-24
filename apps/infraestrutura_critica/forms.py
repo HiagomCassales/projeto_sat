@@ -5,6 +5,7 @@ class InfraestruturaCriticaForm(forms.ModelForm):
     class Meta:
         model = InfraestruturaCritica
         fields = [
+            'data',
             'gmg1_1_brasilia', 'gmg1_1_rio',
             'gmg1_2_brasilia', 'gmg1_2_rio',
             'autonomia1_brasilia', 'autonomia1_rio',
@@ -21,6 +22,7 @@ class InfraestruturaCriticaForm(forms.ModelForm):
             'observacoes',
         ]
         widgets = {
+            'data': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'gmg1_1_brasilia': forms.Select(choices=InfraestruturaCritica.CHOICES),
             'gmg1_1_rio': forms.Select(choices=InfraestruturaCritica.CHOICES),
             'gmg1_2_brasilia': forms.Select(choices=InfraestruturaCritica.CHOICES),

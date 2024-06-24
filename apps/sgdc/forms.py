@@ -5,6 +5,7 @@ class EspacialSegmentForm(forms.ModelForm):
     class Meta:
         model = EspacialSegment
         fields = [
+            'data',
             'plataforma_saude', 'proc_executados', 'alerta_conjuncao',
             'campanha_ranging', 'prox_manobra', 'tempo_eclipse',
             'smc_brasilia', 'smc_rio', 'cmc_brasilia', 'cmc_rio',
@@ -14,6 +15,7 @@ class EspacialSegmentForm(forms.ModelForm):
             'gcn_tcr_rio', 'clima_espacial', 'ssa_sda',
         ]
         widgets = {
+            'data': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'plataforma_saude': forms.Select(attrs={'class': 'circle-select'}, choices=EspacialSegment.CHOICES),
             'proc_executados': forms.Select(attrs={'class': 'circle-select'}, choices=EspacialSegment.CHOICES),
             'alerta_conjuncao': forms.Select(attrs={'class': 'circle-select'}, choices=EspacialSegment.CHOICES),

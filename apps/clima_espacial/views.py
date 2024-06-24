@@ -18,22 +18,18 @@ def index(request):
 
     return render(request, 'clima_espacial/index.html', {'briefing': briefing, 'briefings': briefings})
 
-@login_required
 def new_clima(request):
     if not set(request.user.categories.values_list('name', flat=True)).intersection({'clima_espacial', 'admin'}):
         messages.error(request, "Você não tem permissão para acessar esta página.")
         return redirect('post_login_redirect')
-    
-    today = timezone.now().date()
-    if ClimaEspacial.objects.filter(data=today).exists():
-        messages.warning(request, 'Um briefing para hoje já existe.')
-        return redirect('clima_espacial:index')
-    
+
     if request.method == 'POST':
         form = ClimaEspacialForm(request.POST)
         if form.is_valid():
             briefing = form.save(commit=False)
-            briefing.data = today
+            if ClimaEspacial.objects.filter(data=briefing.data).exists():
+                messages.error(request, 'Já existe um briefing para esta data.')
+                return redirect('clima_espacial:new_clima')
             briefing.save()
             messages.success(request, 'Briefing criado com sucesso.')
             return redirect('clima_espacial:index')

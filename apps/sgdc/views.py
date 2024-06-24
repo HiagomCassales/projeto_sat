@@ -13,16 +13,10 @@ def index(request):
     return render(request, 'sgdc/index.html', {'briefing': briefing, 'briefings': briefings})
 
 def new_briefing(request):
-    today = timezone.now().date()
-    if EspacialSegment.objects.filter(data=today).exists():
-        messages.warning(request, 'Um briefing para hoje já existe.')
-        return redirect('sgdc:index')
-    
     if request.method == 'POST':
         form = EspacialSegmentForm(request.POST)
         if form.is_valid():
             briefing = form.save(commit=False)
-            briefing.data = today
             briefing.save()
             messages.success(request, 'Briefing criado com sucesso.')
             return redirect('sgdc:index')

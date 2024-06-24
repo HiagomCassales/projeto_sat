@@ -25,16 +25,13 @@ def new_briefing(request):
         messages.error(request, "Você não tem permissão para acessar esta página.")
         return redirect('post_login_redirect')
 
-    today = timezone.now().date()
-    if Lessonia.objects.filter(data=today).exists():
-        messages.warning(request, 'Um briefing para hoje já existe.')
-        return redirect('lessonia:index')
-    
     if request.method == 'POST':
         form = LessoniaForm(request.POST)
         if form.is_valid():
             briefing = form.save(commit=False)
-            briefing.data = today
+            if Lessonia.objects.filter(data=briefing.data).exists():
+                messages.error(request, 'Já existe um briefing para esta data.')
+                return redirect('lessonia:new_briefing')
             briefing.save()
             messages.success(request, 'Briefing criado com sucesso.')
             return redirect('lessonia:index')

@@ -99,8 +99,7 @@
             <img src="https://www2.fab.mil.br/incaer/images/eventgallery/SISCULT/Heraldica/Emblemas/Imagens/comae.gif" alt="Logo" class="logo" style="max-width: 100%;">
         </div>
         <div class="col-12 col-md-10 text-center mt-3 mt-md-0">
-            <h3 class="card-title mt-3">Briefing Diário Infraestrutura Crítica - {{ current_date|date:"d/m/Y" }}</h3>
-            <h6 class="card-title mt-3">Período: {{ briefing_start|date:"d/m/Y H:i" }} até {{ briefing_end|date:"d/m/Y H:i" }}</h6>
+            <h3 class="card-title mt-3">Briefing Diário Infraestrutura Crítica</h3>
         </div>
     </div>
 
@@ -142,6 +141,12 @@
                 <h4 class="m-0 text-center">Linha 1 GMG</h4>
                 <div class="custom-border mt-3">
                     <table class="table table-borderless">
+                        <thead>
+                            <tr>
+                                <td class="col-8">{{ form.data.label_tag }}</td>
+                                <td class="col-4 text-center">{{ form.data }}</td>
+                            </tr>
+                        </thead>
                         <thead>
                             <tr>
                                 <th class="text-center">Local</th>

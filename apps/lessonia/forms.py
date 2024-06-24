@@ -5,6 +5,7 @@ class LessoniaForm(forms.ModelForm):
     class Meta:
         model = Lessonia
         fields = [
+            'data',
             'saude_plataforma_x18', 'saude_plataforma_x19',
             'alerta_conjuncao_x18', 'alerta_conjuncao_x19',
             'manobra_x18', 'manobra_x19',
@@ -21,6 +22,7 @@ class LessoniaForm(forms.ModelForm):
             'gcn_tcr_rio', 'clima_espacial', 'ssa_sda',
         ]
         widgets = {
+            'data': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'saude_plataforma_x18': forms.Select(attrs={'class': 'circle-select'}, choices=Lessonia.CHOICES),
             'saude_plataforma_x19': forms.Select(attrs={'class': 'circle-select'}, choices=Lessonia.CHOICES),
             'alerta_conjuncao_x18': forms.Select(attrs={'class': 'circle-select'}, choices=Lessonia.CHOICES),

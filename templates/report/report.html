@@ -1,4 +1,3 @@
-
 {% extends 'shared/base.html' %}
 
 {% block title %}Relatório Diário{% endblock %}
@@ -8,139 +7,296 @@
     body {
         background-color: #f4f4f9;
     }
+
     .container {
         margin-top: 50px;
     }
+
     .dashboard-header {
         background-color: #002147;
         color: white;
         padding: 20px;
-        border-radius: 10px;
         text-align: center;
     }
+
     .dashboard-header h1 {
         margin: 0;
         font-size: 2.5rem;
     }
-    .btn-category {
+
+    .card {
+        margin: 10px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-color: white;
+        overflow: hidden;
+        flex: 1;
+    }
+
+    .card-header {
         background-color: #0056b3;
         color: white;
-        border: none;
-        margin: 10px;
-        padding: 10px 20px;
-        border-radius: 5px;
-        font-size: 1.2rem;
+        padding: 15px;
         text-align: center;
-        display: block;
-        width: 100%;
-        transition: background-color 0.3s;
+        font-size: 1.25rem;
     }
-    .btn-category:hover {
-        background-color: #004494;
-        text-decoration: none;
-        color: white;
-    }
-    .chart-container {
-        background-color: white;
+
+    .card-body {
         padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        margin-top: 20px;
     }
-    .chart-title {
-        text-align: center;
-        font-size: 1.5rem;
-        margin-bottom: 20px;
-        color: #333;
-    }
-    .legend-container {
-        margin-top: 10px;
-    }
-    .legend-container .legend-item {
-        display: inline-block;
-        margin-right: 10px;
-    }
-    .legend-container .legend-color {
-        display: inline-block;
-        width: 15px;
-        height: 15px;
-        margin-right: 5px;
-        vertical-align: middle;
-    }
-    .legend-nominal {
-        background-color: rgba(75, 192, 192, 1);
-    }
-    .legend-ruim {
-        background-color: rgba(255, 99, 132, 1);
-    }
-    .legend-inoperante {
-        background-color: rgba(128, 128, 128, 1);
-    }
-    .table-container {
-        background-color: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        margin-top: 20px;
-    }
-    .table-container h2 {
-        text-align: center;
-        font-size: 1.5rem;
-        margin-bottom: 20px;
-        color: #333;
-    }
+
     .table {
         width: 100%;
         margin-bottom: 20px;
     }
-    .table th, .table td {
+
+    .table th,
+    .table td {
         padding: 10px;
         text-align: left;
     }
+
     .btn {
         margin-right: 5px;
     }
+
+    .card-columns {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+    }
+
+    .column {
+        display: flex;
+        flex-direction: column;
+        width: 24%;
+    }
+
+    .double-card {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .double-card .card {
+        flex: 1;
+    }
+
+    @media (max-width: 1200px) {
+        .card-columns {
+            flex-wrap: wrap;
+        }
+
+        .column {
+            width: 48%;
+        }
+
+        .double-card {
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .column {
+            width: 100%;
+        }
+    }
 </style>
-<h1>Relatório do Dia: {{ data }}</h1>
 
-<h2>Espacial Segment</h2>
-{% for item in espacial_segments %}
-    <p>{{ item }}</p>
-{% empty %}
-    <p>Nenhum dado encontrado para essa data.</p>
-{% endfor %}
+<div class="dashboard-header">
+    <h1>Relatório do Dia: {{ data }}</h1>
+</div>
 
-<h2>Lessonia</h2>
-{% for item in lessonias %}
-    <p>{{ item }}</p>
-{% empty %}
-    <p>Nenhum dado encontrado para essa data.</p>
-{% endfor %}
+<style>
+    .item {
+        text-align: center;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+    }
 
-<h2>Infraestrutura Crítica</h2>
-{% for item in infraestruturas %}
-    <p>{{ item }}</p>
-{% empty %}
-    <p>Nenhum dado encontrado para essa data.</p>
-{% endfor %}
+    .col-custom {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
 
-<h2>Contratos de Imagens</h2>
-{% for item in contratos %}
-    <p>{{ item }}</p>
-{% empty %}
-    <p>Nenhum dado encontrado para essa data.</p>
-{% endfor %}
+    .item-5,
+    .item-6,
+    .item-7 {
+        margin-top: 10px;
+        /* Espaço entre os itens */
+    }
+</style>
+<div class="container-fluid">
 
-<h2>Clima Espacial</h2>
-{% for item in climas %}
-    <p>{{ item }}</p>
-{% empty %}
-    <p>Nenhum dado encontrado para essa data.</p>
-{% endfor %}
+    <div class="row justify-content-end">
+        <div class="col-md-3">
+            <form method="get" class="mt-4">
+                <div class="form-group">
+                    <label class="mb-2" for="data">Escolha a data:</label>
+                    <input type="date" id="data" name="data" value="{{ data }}" class="form-control form-control-sm">
+                </div>
+                <div class="d-flex justify-content-end mt-2">
+                    <button type="submit" class="btn btn-primary btn-sm">Buscar</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-<form method="get">
-    <label for="data">Escolha a data:</label>
-    <input type="date" id="data" name="data" value="{{ data }}">
-    <button type="submit">Buscar</button>
-</form>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card item">
+                <div class="card-header">SGDC</div>
+                <div class="card-body">
+                    {% if espacial_segments %}
+                    {% for item in espacial_segments %}
+                    <table class="table table-borderless">
+                        <h4 class="m-0 text-center">Segmento Espacial</h4>
+                        <tbody>
+                            <tr>
+                                <td class="col-8">{{ item.plataforma_saude.label_tag }}</td>
+                                <td class="col-4 text-center">{{ item.plataforma_saude }}</td>
+                            </tr>
+                            <tr>
+                                <td class="col-8">{{ item.proc_executados.label_tag }}</td>
+                                <td class="col-4 text-center">{{ item.proc_executados }}</td>
+                            </tr>
+                            <tr>
+                                <td class="col-8">{{ item.alerta_conjuncao.label_tag }}</td>
+                                <td class="col-4 text-center">{{ item.alerta_conjuncao }}</td>
+                            </tr>
+                            <tr>
+                                <td class="col-8">{{ item.campanha_ranging.label_tag }}</td>
+                                <td class="col-4 text-center">{{ item.campanha_ranging }}</td>
+                            </tr>
+                            <tr>
+                                <td class="col-8">{{ item.prox_manobra.label_tag }}</td>
+                                <td class="col-4 text-center">{{ item.prox_manobra }}</td>
+                            </tr>
+                            <tr>
+                                <td class="col-8">{{ item.tempo_eclipse.label_tag }}</td>
+                                <td class="col-4 text-center">{{ item.tempo_eclipse }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h4 class="text-center mt-5">Segmento Solo</h4>
+                    <table class="table table-borderless">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Indicadores</th>
+                                <th class="text-center">BRA</th>
+                                <th class="text-center">RIO</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>SMC</td>
+                                <td class="text-center">{{ item.smc_brasilia }}</td>
+                                <td class="text-center">{{ item.smc_rio }}</td>
+                            </tr>
+                            <tr>
+                                <td>CMC-X</td>
+                                <td class="text-center">{{ item.cmc_brasilia }}</td>
+                                <td class="text-center">{{ item.cmc_rio }}</td>
+                            </tr>
+                            <tr>
+                                <td>Antena (TCR)</td>
+                                <td class="text-center">{{ item.tcr_brasilia }}</td>
+                                <td class="text-center">{{ item.tcr_rio }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h4 class="text-center mt-5">Emprego da Carga Útil Militar</h4>
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <td>{{ item.enlaces_ativos.label_tag }}</td>
+                                <td class="text-center">{{ item.enlaces_ativos }}</td>
+                            </tr>
+                            <tr>
+                                <td>{{ item.qualidade_enlaces.label_tag }}</td>
+                                <td class="text-center">{{ item.qualidade_enlaces }}</td>
+                            </tr>
+                            <tr>
+                                <td>{{ item.antena_teatro_em_uso.label_tag }}</td>
+                                <td class="text-center">{{ item.antena_teatro_em_uso }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    {% endfor %}
+                    {% else %}
+                    <p>Nenhum dado encontrado para essa data.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card item">
+                <div class="card-header">Lessonia (Op. Compartilhada)</div>
+                <div class="card-body">
+                    {% if lessonias %}
+                    {% for item in lessonias %}
+                    <h4 class="m-0 text-center">Segmento Espacial</h4>
+
+                    {% endfor %}
+                    {% else %}
+                    <p>Nenhum dado encontrado para essa data.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card item">
+                <div class="card-header">Infraestrutura Crítica</div>
+                <div class="card-body">
+                    {% if infraestruturas %}
+                    {% for item in infraestruturas %}
+
+
+                    {% endfor %}
+                    {% else %}
+                    <p>Nenhum dado encontrado para essa data.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-custom">
+            <div class="card item">
+                <div class="card-header">Clima Espacial</div>
+                <div class="card-body">
+                    {% if climas %}
+                    {% for item in climas %}
+                    {% endfor %}
+                    {% else %}
+                    <p>Nenhum dado encontrado para essa data.</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card item item-5">
+                <div class="card-header">Contratos de Imagens</div>
+                <div class="card-body">
+                    {% if contratos %}
+                    {% for item in contratos %}
+                    {% endfor %}
+                    {% else %}
+                    <p>Nenhum dado encontrado para essa data.</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card item item-6">
+                <div class="card-header bg-dark">Legenda</div>
+                <div class="card-body">
+
+                </div>
+            </div>
+            <div class="card item item-7">
+                <div class="card-header bg-dark">Contatos Funcionais</div>
+                <div class="card-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 {% endblock %}
